@@ -11,8 +11,14 @@ class User < ApplicationRecord
   end
 
   def remember
-    remember_token = User.new_token
+    self.remember_token = User.new_token
     self.remember_digest = remember_digest
+  end
+
+  def authenticate?(token)
+    digest = send(token)
+    return false if digest.nil?
+    Digest::SHA1.hexdigest(digest) == token
   end
   private
 
