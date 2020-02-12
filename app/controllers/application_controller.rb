@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include SessionsHelper
 
@@ -5,9 +7,7 @@ class ApplicationController < ActionController::Base
     render html: '', layout: true
   end
 
-  def is_logged_in?
-    unless logged_in?
-      redirect_to login_path
-    end
+  def check_if_logged_in?
+    redirect_to login_path unless logged_in?
   end
 end
