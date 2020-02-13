@@ -12,8 +12,11 @@ class User < ApplicationRecord
     Digest::SHA1.hexdigest token.to_s
   end
 
-  def authenticate?(remember_token)
-    remember_token == remember_token
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+
+    digest == token
   end
 
   # Forgets a user.
@@ -23,6 +26,6 @@ class User < ApplicationRecord
 
   def remember
     self.remember_token = User.new_token
-    update_attribute(:remember_digest, self.remember_token)
+    update_attribute(:remember_digest, remember_token)
   end
 end
