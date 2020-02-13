@@ -12,7 +12,15 @@ class PostsController < ApplicationController
   end
 
   def create
-    Post.create(title: params[:post][:title], body: params[:post][:body], user_id: current_user.id)
+    post = Post.new(post_params)
+    post.user_id = current_user.id
+    post.save
     redirect_to posts_path
+  end
+
+  private
+
+  def post_params
+    params.require(:post).permit(:title, :body)
   end
 end
