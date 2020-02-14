@@ -4,6 +4,7 @@ module SessionsHelper
   # Logs in the given user.
   def log_in(user)
     user.remember
+    user.update_attribute(:remember_digest, user.remember_token)
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token
   end
